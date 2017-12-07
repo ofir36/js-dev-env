@@ -1,0 +1,9 @@
+{
+  "name": "js-dev-env",
+  "version": "1.0.0",
+  "description": "JavaScript Development Environment",
+  "scripts": {
+  },
+  "author": "",
+  "license": "ISC"
+}
