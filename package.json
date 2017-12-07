@@ -2,8 +2,12 @@
   "name": "js-dev-env",
   "version": "1.0.0",
   "description": "JavaScript Development Environment",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.16.2",
+    "open": "0.0.5",
+    "path": "^0.12.7"
+  }
 }
