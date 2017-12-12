@@ -1,4 +1,5 @@
 import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default {
     entry: './src/index',
@@ -9,6 +10,13 @@ export default {
         filename: 'bundle.js',
         publicPath: '/'
     },
+    plugins: [
+        // Create HTML file that includes reference to bundled JS
+        new HtmlWebpackPlugin({
+            template: 'src/index.html',
+            inject: true
+        })
+    ],
     module: {
         rules: [
             {
