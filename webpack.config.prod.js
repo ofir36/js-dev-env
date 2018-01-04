@@ -4,6 +4,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WebpackMd5Hash from 'webpack-md5-hash';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
+const GLOBALS = {
+    'process.env.NODE_ENV': JSON.stringify('production')
+};
+
 export default {
     entry: {
         main: './src/index',
@@ -22,6 +26,9 @@ export default {
 
         // Hash files using MD5 so that their names change when the content change
         new WebpackMd5Hash(),
+
+        // Tells React to build in prod mode
+        new webpack.DefinePlugin(GLOBALS),
 
         // Create seperate bundle for vendor libraries
         new webpack.optimize.CommonsChunkPlugin({
@@ -54,12 +61,7 @@ export default {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env']
-                    }
-                }
+                use: ['babel-loader']
             },
             {
                 test: /\.css$/,

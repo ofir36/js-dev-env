@@ -1,5 +1,26 @@
-import './index.css';
-import numeral from 'numeral';
+import React from 'react';
+import configureStore from './store/configureStore';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import Root from './components/Root';
 
-const courseValue = numeral(1000).format('$0,0.00');
-console.log(`Value is ${courseValue}`); // eslint-disable-line no-console
+const store = configureStore();
+
+render(
+    <AppContainer>
+        <Root store={store} />
+    </AppContainer>,
+    document.getElementById('app')
+);
+
+if (module.hot) {
+    module.hot.accept('./components/Root', () => {
+        const NewRoot = require('./components/Root').default;
+        render(
+            <AppContainer>
+                <NewRoot store={store} />
+            </AppContainer>,
+            document.getElementById('app')
+        );
+    });
+}

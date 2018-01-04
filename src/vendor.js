@@ -2,4 +2,8 @@
 
 /* eslint-disable no-unused-vars */
 
-import numeral from 'numeral';
+import 'react';
+import 'react-dom';
+import 'redux';
+import 'react-redux';
+import 'redux-thunk';
