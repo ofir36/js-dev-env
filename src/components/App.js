@@ -1,19 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import TodoPage from './TodoPage';
 
-class App extends Component {
+type Props = {
+    children?: React.Node
+};
+
+class App extends React.Component<Props> {
     render() {
         return (
             <div>
-                <h1>Hello</h1>
-                {this.props.children}
+                <Switch>
+                    <Route exact path="/" component={TodoPage} />
+                </Switch>
             </div>
         );
     }
 }
-
-App.propTypes = {
-    children: PropTypes.object.isRequired
-};
 
 export default App;

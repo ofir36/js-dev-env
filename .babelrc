@@ -3,9 +3,11 @@
         "development": {
             "presets": [
                 "env",
-                "react"
+                "react",
+                "flow"
             ],
             "plugins": [
+                "transform-react-jsx-source",
                 "react-hot-loader/babel"
             ]
         },
@@ -23,7 +25,8 @@
                     }
                   }
                 ],
-                "react"
+                "react",
+                "flow"
               ],
             "plugins": [
                 "transform-react-remove-prop-types"

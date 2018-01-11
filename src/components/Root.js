@@ -1,21 +1,27 @@
-import React, { Component } from 'react';
+// @flow
+import React from 'react';
 import { Provider } from 'react-redux';
-import PropTypes from 'prop-types';
+import { ConnectedRouter } from 'react-router-redux';
 import App from './App';
+import type { Store } from '../types';
+import type { History } from 'history';
 
-class Root extends Component {
+type Props = {
+    store: Store,
+    history: History
+};
+
+class Root extends React.Component<Props> {
     render() {
-        const { store } = this.props;
+        const { store, history } = this.props;
         return (
             <Provider store={store}>
-                <App />
+                <ConnectedRouter history={history}>
+                    <App />
+                </ConnectedRouter>
             </Provider>
         );
     }
 }
-
-Root.propTypes = {
-    store: PropTypes.object.isRequired
-};
 
 export default Root;

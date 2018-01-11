@@ -1,16 +1,24 @@
+// @flow
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from '../reducers';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
+import createHistory from 'history/createBrowserHistory';
+import { routerMiddleware } from 'react-router-redux';
+import type { State } from '../types';
 
-function configureStoreDev(initialState) {
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const history = createHistory();
+
+function configureStoreDev(initialState?: State) {
+    const reactRouterMiddleware = routerMiddleware(history);
     const middlewares = [
         // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
         reduxImmutableStateInvariant(),
-        thunk
+        thunk,
+        reactRouterMiddleware
     ];
 
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const store = createStore(
         rootReducer,
         initialState,
@@ -20,8 +28,9 @@ function configureStoreDev(initialState) {
     return store;
 }
 
-function configureStoreProd(initialState) {
-    const middlewares = [thunk];
+function configureStoreProd(initialState?: State) {
+    const reactRouterMiddleware = routerMiddleware(history);
+    const middlewares = [thunk, reactRouterMiddleware];
 
     const store = createStore(
         rootReducer,
