@@ -6,6 +6,7 @@ import * as actions from '../actions/todoActions';
 import type { State } from '../types';
 import type { Todo } from '../types/todo';
 import TodoList from './TodoList';
+import { Button, Form, Container } from 'semantic-ui-react';
 
 type Props = {
     todos: Todo[],
@@ -38,11 +39,13 @@ class TodoPage extends React.Component<Props, LocalState> {
 
     render() {
         return (
-            <div>
-                <input onChange={e => this.onNameChange(e)} />
-                <input type="submit" value="add" onClick={() => this.addTodo()} />
+            <Container text>
+                <Form>
+                    <Form.Input placeholder="Name" onChange={e => this.onNameChange(e)} />
+                    <Button onClick={() => this.addTodo()}>Add</Button>
+                </Form>
                 <TodoList todos={this.props.todos} />
-            </div>
+            </Container>
         );
     }
 }
