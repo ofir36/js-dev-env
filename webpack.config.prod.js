@@ -64,17 +64,104 @@ export default {
                 use: ['babel-loader']
             },
             {
-                test: /\.css$/,
-                exclude: /node_modules/,
-                use: ExtractTextPlugin.extract({
-                    use: {
-                        loader: 'css-loader',
+                test: /\.eot(\?v=\d+.\d+.\d+)?$/,
+                use: [
+                    {
+                        loader: 'url-loader',
                         options: {
-                            minimize: true,
-                            sourceMap: true
+                            name: '[name].[ext]'
                         }
                     }
-                })
+                ]
+            },
+            {
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            mimetype: 'application/font-woff',
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            mimetype: 'application/octet-stream',
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 10000,
+                            mimetype: 'image/svg+xml',
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(jpe?g|png|gif|ico)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
+                oneOf: [
+                    {
+                        test: /\.css$/,
+                        resourceQuery: /^\?global$/,
+                        use: ExtractTextPlugin.extract({
+                            use: [
+                                {
+                                    loader: 'css-loader',
+                                    options: {
+                                        importLoaders: 1,
+                                        minimize: true,
+                                        sourceMap: true
+                                    }
+                                },
+                                'postcss-loader'
+                            ]
+                        })
+                    },
+                    {
+                        test: /\.css$/,
+                        use: ExtractTextPlugin.extract({
+                            use: [
+                                {
+                                    loader: 'css-loader',
+                                    options: {
+                                        importLoaders: 1,
+                                        minimize: true,
+                                        sourceMap: true,
+                                        modules: true,
+                                        localIdentName: '[local]--[hash:base64:5]'
+                                    }
+                                },
+                                'postcss-loader'
+                            ]
+                        })
+                    }
+                ]
             }
         ]
     }

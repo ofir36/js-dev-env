@@ -83,11 +83,36 @@ export default {
                 ]
             },
             {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    { loader: 'css-loader', options: { importLoaders: 1 } },
-                    'postcss-loader'
+                oneOf: [
+                    {
+                        test: /\.css$/,
+                        resourceQuery: /^\?global$/,
+                        use: [
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    importLoaders: 1
+                                }
+                            },
+                            'postcss-loader'
+                        ]
+                    },
+                    {
+                        test: /\.css$/,
+                        use: [
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    importLoaders: 1,
+                                    modules: true,
+                                    localIdentName: '[local]--[hash:base64:5]'
+                                }
+                            },
+                            'postcss-loader'
+                        ]
+                    }
                 ]
             }
         ]
