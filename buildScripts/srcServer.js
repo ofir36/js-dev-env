@@ -21,11 +21,11 @@ app.use(
 
 app.use(webpackHotMiddleware(compiler));
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../src/index.html'));
 });
 
-app.listen(port, function(error) {
+app.listen(port, error => {
     if (error) console.log(error);
     else open('http://localhost:' + port, 'google chrome');
 });

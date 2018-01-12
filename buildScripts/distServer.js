@@ -11,11 +11,11 @@ const app = express();
 app.use(compression());
 app.use(express.static('dist')); // need to configure files to cache for a year
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.listen(port, function(error) {
+app.listen(port, error => {
     if (error) console.log(error);
     else open('http://localhost:' + port, 'google chrome');
 });
