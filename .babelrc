@@ -8,7 +8,10 @@
             ],
             "plugins": [
                 "transform-react-jsx-source",
-                "react-hot-loader/babel"
+                "transform-react-jsx-self",
+                "react-hot-loader/babel",
+                "transform-object-rest-spread",
+                "transform-class-properties"
             ]
         },
         "production": {
@@ -16,20 +19,21 @@
                 [
                   "env",
                   {
-                    "es2015": {
-                      "modules": false
-                    },
                     "targets": {
                       "ie": 9,
                       "uglify": true
-                    }
+                    },
+                    "modules": false,
+                    "useBuiltIns": true
                   }
                 ],
                 "react",
                 "flow"
               ],
             "plugins": [
-                "transform-react-remove-prop-types"
+                "transform-react-remove-prop-types",
+                "transform-object-rest-spread",
+                "transform-class-properties"
             ]
         }
     }
