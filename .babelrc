@@ -11,7 +11,11 @@
                 "transform-react-jsx-self",
                 "react-hot-loader/babel",
                 "transform-object-rest-spread",
-                "transform-class-properties"
+                "transform-class-properties",
+                ["react-css-modules", {
+                    "webpackHotModuleReloading": true,
+                    "generateScopedName": "[local]--[hash:base64:5]"
+                }]
             ]
         },
         "production": {
@@ -33,7 +37,10 @@
             "plugins": [
                 "transform-react-remove-prop-types",
                 "transform-object-rest-spread",
-                "transform-class-properties"
+                "transform-class-properties",
+                ["react-css-modules", {
+                    "generateScopedName": "[local]--[hash:base64:5]"
+                }]
             ]
         }
     }
