@@ -5,6 +5,8 @@ import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
+import createRavenMiddleware from 'raven-for-redux';
+import Raven from 'raven-js';
 import type { State } from '../types';
 
 export const history = createHistory();
@@ -18,7 +20,8 @@ function configureStoreDev(initialState?: State) {
         reactRouterMiddleware
     ];
 
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    const composeEnhancers =
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const store = createStore(
         rootReducer,
         initialState,
@@ -29,8 +32,16 @@ function configureStoreDev(initialState?: State) {
 }
 
 function configureStoreProd(initialState?: State) {
+    Raven.config(
+        'https://012e4b79b7354d43ac99125f1fe707f3@sentry.io/271362'
+    ).install();
+
     const reactRouterMiddleware = routerMiddleware(history);
-    const middlewares = [thunk, reactRouterMiddleware];
+    const middlewares = [
+        thunk,
+        reactRouterMiddleware,
+        createRavenMiddleware(Raven)
+    ];
 
     const store = createStore(
         rootReducer,
@@ -42,6 +53,8 @@ function configureStoreProd(initialState?: State) {
 }
 
 const configureStore =
-    process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
+    process.env.NODE_ENV === 'production'
+        ? configureStoreProd
+        : configureStoreDev;
 
 export default configureStore;
