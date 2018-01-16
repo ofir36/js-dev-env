@@ -1,0 +1,24 @@
+.container {
+    margin: 6% auto;
+    max-width: 40%;
+}
+
+.inputNormal {
+    top: 0;
+    padding: 0;
+    backdrop-filter: blur(0);
+    transition: top 0.5s ease, padding-top 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.inputFixed {
+    position: fixed !important;
+    top: 0;
+    width: 40%;
+    z-index: 150;
+    /* box-shadow: 0px 0px 20px #656565; */
+    transition: top 0.5s ease, padding-top 0.5s ease, backdrop-filter 0.5s ease;
+    padding: 50px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid #d6d6d6;
+}

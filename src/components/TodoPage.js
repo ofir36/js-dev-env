@@ -6,7 +6,9 @@ import * as actions from '../actions/todoActions';
 import type { State } from '../types';
 import type { Todo } from '../types/todo';
 import TodoList from './TodoList';
-import { Button, Form, Container } from 'semantic-ui-react';
+import { Header, Icon } from 'semantic-ui-react';
+import TodoInput from './TodoInput';
+import '../styles/todoPage.css';
 
 type Props = {
     todos: Todo[],
@@ -14,36 +16,62 @@ type Props = {
 };
 
 type LocalState = {
-    todo: Todo
+    todoName: string,
+    inputFixed: boolean
 };
 
 class TodoPage extends React.Component<Props, LocalState> {
     state = {
-        todo: {
-            name: ''
-        }
+        todoName: '',
+        inputFixed: false
     };
 
     addTodo = () => {
-        this.props.actions.addTodo(this.state.todo);
+        if (this.state.todoName === '') return;
+
+        const todo = {
+            id: +new Date(),
+            name: this.state.todoName
+        };
+
+        this.props.actions.addTodo(todo);
+        this.setState({ todoName: '' });
     };
 
     onNameChange = e => {
-        const todo = {
-            name: e.currentTarget.value
-        };
-        this.setState({ todo });
+        const todoName = e.currentTarget.value;
+        this.setState({ todoName });
+    };
+
+    onInputPassed = () => {
+        this.setState({ inputFixed: true });
+    };
+
+    onInputVisible = () => {
+        this.setState({ inputFixed: false });
+    };
+
+    deleteTodo = (e, data) => {
+        this.props.actions.deleteTodo(data.todoid);
     };
 
     render() {
         return (
-            <Container text>
-                <Form>
-                    <Form.Input placeholder="Name" onChange={this.onNameChange} />
-                    <Button onClick={this.addTodo}>Add</Button>
-                </Form>
-                <TodoList todos={this.props.todos} />
-            </Container>
+            <div styleName="container">
+                <Header as="h1" textAlign="center">
+                    <Icon name="tasks" />
+                    Todos
+                </Header>
+                <TodoInput
+                    isFixed={this.state.inputFixed}
+                    onChange={this.onNameChange}
+                    onPassed={this.onInputPassed}
+                    onVisible={this.onInputVisible}
+                    onSubmit={this.addTodo}
+                    todoName={this.state.todoName}
+                />
+                <TodoList todos={this.props.todos} onDelete={this.deleteTodo} />
+            </div>
         );
     }
 }
