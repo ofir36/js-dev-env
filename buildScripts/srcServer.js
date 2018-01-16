@@ -1,5 +1,5 @@
 import express from 'express';
-import open from 'open';
+import opn from 'opn';
 import path from 'path';
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
@@ -27,5 +27,9 @@ app.get('/', (req, res) => {
 
 app.listen(port, error => {
     if (error) console.log(error);
-    else open('http://localhost:' + port, 'google chrome');
+    else {
+        opn('http://localhost:' + port, {
+            app: ['google chrome', '--remote-debugging-port=9222']
+        });
+    }
 });

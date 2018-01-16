@@ -9,7 +9,7 @@ export default {
         'webpack-hot-middleware/client?reload=true', // reloads the page if hot module reloading fails
         './src/index'
     ],
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'eval-source-map',
     target: 'web',
     output: {
         path: path.resolve(__dirname, 'src/index'),

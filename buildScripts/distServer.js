@@ -1,5 +1,5 @@
 import express from 'express';
-import open from 'open';
+import opn from 'opn';
 import path from 'path';
 import compression from 'compression';
 
@@ -17,5 +17,9 @@ app.get('/', (req, res) => {
 
 app.listen(port, error => {
     if (error) console.log(error);
-    else open('http://localhost:' + port, 'google chrome');
+    else {
+        opn('http://localhost:' + port, {
+            app: ['google chrome', '--remote-debugging-port=9222']
+        });
+    }
 });
