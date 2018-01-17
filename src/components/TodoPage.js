@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/todoActions';
+import * as _actions from '../actions/todoActions'; // add _ to prevent accidently trying dispatching events
 import type { State } from '../types';
 import type { Todo } from '../types/todo';
 import TodoList from './TodoList';
@@ -12,19 +12,30 @@ import '../styles/todoPage.css';
 
 type Props = {
     todos: Todo[],
-    actions: typeof actions
+    actions: typeof _actions
 };
 
 type LocalState = {
     todoName: string,
-    inputFixed: boolean
+    inputFixed: boolean,
+    editedTodo: Todo
 };
 
 class TodoPage extends React.Component<Props, LocalState> {
     state = {
         todoName: '',
-        inputFixed: false
+        inputFixed: false,
+        editedTodo: {
+            id: 0,
+            name: ''
+        }
     };
+
+    componentDidUpdate() {
+        if (this.editInput) this.editInput.focus();
+    }
+
+    editInput: ?HTMLInputElement;
 
     addTodo = () => {
         if (this.state.todoName === '') return;
@@ -38,9 +49,42 @@ class TodoPage extends React.Component<Props, LocalState> {
         this.setState({ todoName: '' });
     };
 
+    deleteTodo = (e, { todoid }) => {
+        this.props.actions.deleteTodo(todoid);
+    };
+
     onNameChange = e => {
         const todoName = e.currentTarget.value;
         this.setState({ todoName });
+    };
+
+    onEdit = (e, { todo }) => {
+        this.setState(prevState => {
+            const editedTodo =
+                prevState.editedTodo.id === 0
+                    ? { ...todo, name: '' }
+                    : { id: 0, name: '' };
+            return { editedTodo };
+        });
+    };
+
+    onEditConfirm = e => {
+        if (e.key === 'Enter') {
+            this.props.actions.updateTodo(this.state.editedTodo);
+            this.setState({ editedTodo: { id: 0, name: '' } });
+        }
+    };
+
+    onEditNameChange = e => {
+        e.persist();
+
+        this.setState(prevState => {
+            const editedTodo = {
+                ...prevState.editedTodo,
+                name: e.target.value
+            };
+            return { editedTodo };
+        });
     };
 
     onInputPassed = () => {
@@ -51,8 +95,8 @@ class TodoPage extends React.Component<Props, LocalState> {
         this.setState({ inputFixed: false });
     };
 
-    deleteTodo = (e, data) => {
-        this.props.actions.deleteTodo(data.todoid);
+    editInputRef = input => {
+        this.editInput = input;
     };
 
     render() {
@@ -70,7 +114,15 @@ class TodoPage extends React.Component<Props, LocalState> {
                     onSubmit={this.addTodo}
                     todoName={this.state.todoName}
                 />
-                <TodoList todos={this.props.todos} onDelete={this.deleteTodo} />
+                <TodoList
+                    todos={this.props.todos}
+                    onDelete={this.deleteTodo}
+                    onEdit={this.onEdit}
+                    editedTodo={this.state.editedTodo}
+                    onEditConfirm={this.onEditConfirm}
+                    onEditNameChange={this.onEditNameChange}
+                    editInputRef={this.editInputRef}
+                />
             </div>
         );
     }
@@ -84,7 +136,7 @@ const mapStateToProps = (state: State) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(_actions, dispatch)
     };
 };
 

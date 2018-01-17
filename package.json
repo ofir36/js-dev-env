@@ -7,6 +7,7 @@
         "start":
             "concurrently -k -s first \"npm run open:src\" \"npm run lint:watch\"",
         "open:src": "babel-node buildScripts/srcServer.js",
+        "prelint": "flow",
         "lint": "esw webpack.config.* src buildScripts",
         "lint:watch": "npm run lint -- --watch",
         "security-check": "nsp check",
