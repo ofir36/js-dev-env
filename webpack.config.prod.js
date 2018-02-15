@@ -61,7 +61,7 @@ export default {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: ['babel-loader']
+                use: ['babel-loader?cacheDirectory']
             },
             {
                 test: /\.eot(\?v=\d+.\d+.\d+)?$/,
